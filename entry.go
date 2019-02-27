@@ -36,7 +36,7 @@ func write(w io.Writer, s []byte) (n int, err error) {
 	case *os.File:
 		for _, name := range stdoutNames {
 			if v.Name() == name {
-				return fmt.Printf(string(s)) // nolint: megacheck
+				return fmt.Printf("%s", string(s)) // nolint: megacheck
 			}
 		}
 	default:

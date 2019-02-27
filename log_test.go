@@ -176,3 +176,16 @@ func TestLog_BasicPanic(t *testing.T) {
 	t.Logf("out string = %q", errOut.String())
 	assert.Equal(t, cmpStr, errOut.String())
 }
+
+func TestLog_PrintExceptions(t *testing.T) {
+	logger, out, _ := newSimpleLogger(conlog.DebugLevel)
+
+	// Try a string containing formatting characters.
+	testStr := "%s abc %%n %d %t %v"
+	cmpStr := testStr
+	logger.Print(testStr)
+	t.Logf("test string = %q", testStr)
+	t.Logf("out string =     %q", out.String())
+	t.Logf("cmp string =     %q", cmpStr)
+	assert.Equal(t, cmpStr, out.String())
+}
