@@ -133,6 +133,10 @@ type ConLogger interface {
 	GetLevel() Level
 	SetPrintEnabled(enabled bool)
 	GetPrintEnabled() bool
+	GetOutput() io.Writer
+	SetOutput(w io.Writer)
+	GetErrorOutput() io.Writer
+	SetErrorOutput(w io.Writer)
 
 	Printf(format string, args ...interface{})
 	Debugf(format string, args ...interface{})

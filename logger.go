@@ -118,12 +118,30 @@ func NewLogger() *Logger {
 	return log
 }
 
+// GetOutput returns the writer used for Print, Debug, and Warning
+// messages.
+func (log *Logger) GetOutput() io.Writer {
+	log.mu.Lock()
+	defer log.mu.Unlock()
+
+	return log.out
+}
+
 // SetOutput sets the writer used for Print, Debug, and Warning
 // messages.
 func (log *Logger) SetOutput(w io.Writer) {
 	log.mu.Lock()
 	log.out = w
 	log.mu.Unlock()
+}
+
+// GetErrorOutput returns the writer used for Error, Fatal, and Panic
+// messages.
+func (log *Logger) GetErrorOutput() io.Writer {
+	log.mu.Lock()
+	defer log.mu.Unlock()
+
+	return log.errOut
 }
 
 // SetErrorOutput sets the writer used for Error, Fatal, and Panic
