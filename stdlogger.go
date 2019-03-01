@@ -199,38 +199,41 @@ func Panicln(args ...interface{}) {
 }
 
 // FatalWithExitCode logs a message at level Fatal to the standard
-// logger and exits with the specified code.
+// logger. It then exits with the specified code if code >= 0.
 func FatalWithExitCode(code int, args ...interface{}) {
 	std.FatalWithExitCode(code, args...)
 }
 
 // FatalfWithExitCode logs a message at level Fatal to the standard
-// logger and exits with the specified code. Arguments are handled in
-// the manner of fmt.Printf.
+// logger.  It then exits with the specified code if code >=
+// 0. Arguments are handled in the manner of fmt.Printf.
 func FatalfWithExitCode(code int, format string, args ...interface{}) {
 	std.FatalfWithExitCode(code, format, args...)
 }
 
 // FatallnWithExitCode logs a message at level Fatal to the standard
-// logger and exits with the specified exit code.
+// logger. It then exits with the specified code if code >= 0.
 func FatallnWithExitCode(code int, args ...interface{}) {
 	std.FatallnWithExitCode(code, args...)
 }
 
-// FatalIfError logs a message to the standard logger and exits with
-// the specified code if err is not nil.
+// FatalIfError logs a message to the standard logger if err is not
+// nil. It then exits with the specified code (again if the err is not
+// nil) if code >= 0.
 func FatalIfError(err error, code int, args ...interface{}) {
 	std.FatalIfError(err, code, args...)
 }
 
-// FatalfIfError logs a message to the standard logger and exits with
-// the specified code if err is not nil.
+// FatalfIfError logs a message to the standard logger if err is not
+// nil. It then exits with the specified code (again if the err is not
+// nil) if code >= 0.
 func FatalfIfError(err error, code int, format string, args ...interface{}) {
 	std.FatalfIfError(err, code, format, args...)
 }
 
-// FatallnIfError logs a message to the standar logger and exits with
-// the specified code if err is not nil.
+// FatallnIfError logs a message to the standard logger if err is not
+// nil. It then exits with the specified code (again if the err is not
+// nil) if code >= 0.
 func FatallnIfError(err error, code int, args ...interface{}) {
 	std.FatallnIfError(err, code, args...)
 }

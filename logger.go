@@ -424,42 +424,49 @@ func (log *Logger) Fatalln(args ...interface{}) {
 	panic(Exit{DefaultExitCode})
 }
 
-// FatalWithExitCode logs a message at level Fatal on the logger and
-// exits with the specified code.
+// FatalWithExitCode logs a message at level Fatal on the logger. It
+// then exits with the specified code if code >= 0.
 func (log *Logger) FatalWithExitCode(code int, args ...interface{}) {
 	if log.GetLevel() >= FatalLevel {
 		entry := log.newEntry()
 		entry.Fatal(args...)
 		log.releaseEntry(entry)
 	}
-	panic(Exit{code})
+	if code >= 0 {
+		panic(Exit{code})
+	}
 }
 
-// FatalfWithExitCode logs a message at level Fatal on the logger and
-// exits with the specified code. Arguments are handled in the manner
-// of fmt.Printf.
+// FatalfWithExitCode logs a message at level Fatal on the logger. It
+// then exits with the specified code if code >= 0. Arguments are
+// handled in the manner of fmt.Printf.
 func (log *Logger) FatalfWithExitCode(code int, format string, args ...interface{}) {
 	if log.GetLevel() >= FatalLevel {
 		entry := log.newEntry()
 		entry.Fatalf(format, args...)
 		log.releaseEntry(entry)
 	}
-	panic(Exit{code})
+	if code >= 0 {
+		panic(Exit{code})
+	}
 }
 
-// FatallnWithExitCode logs a message at level Fatal on the logger and
-// exits with the specified exit code.
+// FatallnWithExitCode logs a message at level Fatal on the logger. It
+// then exits with the specified exit code if code >= 0.
 func (log *Logger) FatallnWithExitCode(code int, args ...interface{}) {
 	if log.GetLevel() >= FatalLevel {
 		entry := log.newEntry()
 		entry.Fatalln(args...)
 		log.releaseEntry(entry)
 	}
-	panic(Exit{code})
+	if code >= 0 {
+		panic(Exit{code})
+	}
 }
 
-// FatalIfError logs a message to the logger and exits with the
-// specified code if err is not nil.
+// FatalIfError logs a message to the logger if err is not nil. It
+// then exits with the specified code (again if the err is not nil) if
+// code >= 0.
 func (log *Logger) FatalIfError(err error, code int, args ...interface{}) {
 	if err == nil {
 		return
@@ -469,11 +476,14 @@ func (log *Logger) FatalIfError(err error, code int, args ...interface{}) {
 		entry.Fatal(args...)
 		log.releaseEntry(entry)
 	}
-	panic(Exit{code})
+	if code >= 0 {
+		panic(Exit{code})
+	}
 }
 
-// FatalfIfError logs a message to the logger and exits with the
-// specified code if err is not nil.
+// FatalfIfError logs a message to the logger if err is not nil. It
+// then exits with the specified code (again if the err is not nil) if
+// code >= 0.
 func (log *Logger) FatalfIfError(err error, code int, format string, args ...interface{}) {
 	if err == nil {
 		return
@@ -483,12 +493,15 @@ func (log *Logger) FatalfIfError(err error, code int, format string, args ...int
 		entry.Fatalf(format, args...)
 		log.releaseEntry(entry)
 	}
-	panic(Exit{code})
+	if code >= 0 {
+		panic(Exit{code})
+	}
 
 }
 
-// FatallnIfError logs a message to the logger and exits with the
-// specified code if err is not nil.
+// FatallnIfError logs a message to the logger if err is not nil. It
+// then exits with the specified code (again if the err is not nil) if
+// code >= 0.
 func (log *Logger) FatallnIfError(err error, code int, args ...interface{}) {
 	if err == nil {
 		return
@@ -498,7 +511,9 @@ func (log *Logger) FatallnIfError(err error, code int, args ...interface{}) {
 		entry.Fatalln(args...)
 		log.releaseEntry(entry)
 	}
-	panic(Exit{code})
+	if code >= 0 {
+		panic(Exit{code})
+	}
 }
 
 // Panic logs a message at level Panic on the logger and then panics.

@@ -123,6 +123,147 @@ func TestLog_PrintfStyle(t *testing.T) {
 	}
 }
 
+func Test_FatalWithExitCode(t *testing.T) {
+	logger, out, errOut := newSimpleLogger(conlog.FatalLevel)
+
+	testVals := []interface{}{"This is a fatal", 1, 2, "abc", "def"}
+	cmpStr := "FATA This is a fatal1 2abcdef\n"
+	logger.FatalWithExitCode(-1, testVals...)
+	t.Logf("test vals = %v", testVals)
+	t.Logf("out string =  %q", out.String())
+	t.Logf("cmp string =  %q", cmpStr)
+	assert.Empty(t, out.String())
+	assert.Equal(t, cmpStr, errOut.String())
+	out.Reset()
+	errOut.Reset()
+}
+
+func Test_FatallnWithExitCode(t *testing.T) {
+	logger, out, errOut := newSimpleLogger(conlog.FatalLevel)
+
+	testVals := []interface{}{"This is a fatal", 1, 2, "abc", "def"}
+	cmpStr := "FATA This is a fatal 1 2 abc def\n"
+	logger.FatallnWithExitCode(-1, testVals...)
+	t.Logf("test vals = %v", testVals)
+	t.Logf("out string =  %q", out.String())
+	t.Logf("errOut string =  %q", out.String())
+	t.Logf("cmp string =  %q", cmpStr)
+	assert.Empty(t, out.String())
+	assert.Equal(t, cmpStr, errOut.String())
+	out.Reset()
+	errOut.Reset()
+}
+
+func Test_FatalfWithExitCode(t *testing.T) {
+	logger, out, errOut := newSimpleLogger(conlog.FatalLevel)
+
+	testFmt := "%s %d-%d"
+	testArgs := []interface{}{
+		"formatted fatal error:",
+		1,
+		2,
+	}
+	cmpStr := "FATA formatted fatal error: 1-2\n"
+	logger.FatalfWithExitCode(-1, testFmt, testArgs...)
+	t.Logf("test fmt = %q", testFmt)
+	t.Logf("test args = %v", testArgs)
+	t.Logf("out string = %q", out.String())
+	t.Logf("errOut string =  %q", errOut.String())
+	t.Logf("cmp string =  %q", cmpStr)
+	assert.Empty(t, out.String())
+	assert.Equal(t, cmpStr, errOut.String())
+	out.Reset()
+	errOut.Reset()
+}
+
+func Test_FatalIfError(t *testing.T) {
+	logger, out, errOut := newSimpleLogger(conlog.FatalLevel)
+
+	t.Logf("With error:")
+	testVals := []interface{}{"This is a fatal", 1, 2, "abc", "def"}
+	cmpStr := "FATA This is a fatal1 2abcdef\n"
+	logger.FatalIfError(fmt.Errorf("an error"), -1, testVals...)
+	t.Logf("test vals = %v", testVals)
+	t.Logf("out string =  %q", out.String())
+	t.Logf("errOut string =  %q", errOut.String())
+	t.Logf("cmp string =  %q", cmpStr)
+	assert.Empty(t, out.String())
+	assert.Equal(t, cmpStr, errOut.String())
+	out.Reset()
+	errOut.Reset()
+
+	t.Logf("Without error:")
+	logger.FatalIfError(nil, -1, testVals...)
+	t.Logf("test vals = %v", testVals)
+	t.Logf("out string =  %q", out.String())
+	t.Logf("errOut string =  %q", errOut.String())
+	assert.Empty(t, out.String())
+	assert.Empty(t, errOut.String())
+	out.Reset()
+	errOut.Reset()
+}
+
+func Test_FatallnIfError(t *testing.T) {
+	logger, out, errOut := newSimpleLogger(conlog.FatalLevel)
+
+	t.Logf("With error:")
+	testVals := []interface{}{"This is a fatal", 1, 2, "abc", "def"}
+	cmpStr := "FATA This is a fatal 1 2 abc def\n"
+	logger.FatallnIfError(fmt.Errorf("an error"), -1, testVals...)
+	t.Logf("test vals = %v", testVals)
+	t.Logf("out string =  %q", out.String())
+	t.Logf("errOut string =  %q", errOut.String())
+	t.Logf("cmp string =  %q", cmpStr)
+	assert.Empty(t, out.String())
+	assert.Equal(t, cmpStr, errOut.String())
+	out.Reset()
+	errOut.Reset()
+
+	t.Logf("Without error:")
+	logger.FatalIfError(nil, -1, testVals...)
+	t.Logf("test vals = %v", testVals)
+	t.Logf("out string =  %q", out.String())
+	t.Logf("errOut string =  %q", errOut.String())
+	assert.Empty(t, out.String())
+	assert.Empty(t, errOut.String())
+	out.Reset()
+	errOut.Reset()
+}
+
+func Test_FatalfIfError(t *testing.T) {
+	logger, out, errOut := newSimpleLogger(conlog.FatalLevel)
+
+	testFmt := "%s %d-%d"
+	testArgs := []interface{}{
+		"formatted fatal error:",
+		1,
+		2,
+	}
+	cmpStr := "FATA formatted fatal error: 1-2\n"
+
+	t.Logf("With error:")
+	logger.FatalfIfError(fmt.Errorf("an error"), -1, testFmt, testArgs...)
+	t.Logf("test fmt = %q", testFmt)
+	t.Logf("test args = %v", testArgs)
+	t.Logf("out string = %q", out.String())
+	t.Logf("errOut string =  %q", errOut.String())
+	t.Logf("cmp string =  %q", cmpStr)
+	assert.Empty(t, out.String())
+	assert.Equal(t, cmpStr, errOut.String())
+	out.Reset()
+	errOut.Reset()
+
+	t.Logf("Without error:")
+	t.Logf("test fmt = %q", testFmt)
+	t.Logf("test args = %v", testArgs)
+	t.Logf("out string = %q", out.String())
+	t.Logf("errOut string =  %q", errOut.String())
+	assert.Empty(t, out.String())
+	assert.Empty(t, errOut.String())
+	out.Reset()
+	errOut.Reset()
+}
+
 func TestLog_DisablePrint(t *testing.T) {
 	logger, out, _ := newSimpleLogger(conlog.DebugLevel)
 
