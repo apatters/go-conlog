@@ -6,11 +6,23 @@ package conlog
 
 import (
 	"io"
+	"io/ioutil"
 	"os"
 	"sync"
 	"sync/atomic"
 
 	"github.com/tevino/abool"
+)
+
+var (
+	// DiscardLogger throws away all output.
+	DiscardLogger = &Logger{
+		out:          ioutil.Discard,
+		errOut:       ioutil.Discard,
+		formatter:    NewStdFormatter(),
+		level:        PanicLevel,
+		printEnabled: abool.New(),
+	}
 )
 
 // Logger encapsulates basic logging.
